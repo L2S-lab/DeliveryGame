@@ -74,29 +74,62 @@ Pour cela, il faut :
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 English Version
+# DeliveryGame
+[English version below]
 ## Goal of the game
 
 This is a delivery game between a DJI ROBOMASTER EP robot controlled manually by a person (keyboard or joystick) and a DJI ROBOMASTER EP robot controlled automatically using a Python code. The aim is to retrieve two tennis balls and return them to a basket.
 
+## Installing the Python environment
+
+Installing Python : 
+- Have Python 3.7 or 3.8 installed on your computer. You can check with
+py --list
+If this is not the case, install the required version from https://www.python.org/downloads/
+
+Setting up the virtual environment and installing the necessary packages: 
+
+- Go to the location where you want to create the virtual environment and run the command
+``py -3.7 -m venv .venv``. This will create a new python virtual environment with the given version.
+
+- To activate the environment, use the command 
+.\/.venv/Scripts/activate
+
+- Once in this virtual environment, you can install all the necessary modules with the command
+pip install -r requirements.txt
+
+- To exit the virtual environment, use the command 
+deactivate
+
+In the event of an error, kill the terminal to disconnect the virtual environment.
+
 ## Setting up the game
 
-The equipment needed to set up the game is as follows:
+The hardware required to set up the game is as follows:
 
 - 2 DJI ROBOMASTER EP
 - 4 tennis balls
 - 2 baskets: cardboard boxes will do
 - DJI markers
+- two computers
+Each robot must face two tennis balls and behind the robot must be the cardboard box with the marker. 
 
-Each robot must be in front of two tennis balls and behind the robot must be the cardboard box with the marker. 
+Diagram of how to set up the game :   
 
-To make the automatically controlled robot work :
+![Schéma jeu](https://github.com/comoxx/DeliveryGame/assets/93337725/c95afe61-1f57-4ff4-9317-bffa23e5b58d)
 
-- Run the `main.py` program which is located in the `TheGame` folder.
-It is possible to configure the language in which the sound is emitted.
 
-To operate the robot manually :
+To connect to the robots : 
 
-- Connect a game controller to your computer.
+- Turn on the robots, then set the connection switch to direct mode (icon with the telephone).
+- Connect to the robot's WIFI on your computer
+- The password can be found on the robot label
+
+To operate the automatically controlled robot :
+
+- Use the command `python .\TheGame\main.py ` to start the game.You can configure the language in which the sound is emitted.
+
+To run the manually controlled robot:- Connect a game controller to your computer.
 - Run the `control_manette.py` program in the `ControlRobot` folder.
 
 
@@ -106,6 +139,7 @@ The students can set the PID that allows the robot to move towards the marker.
 
 To do this, they must :
 
-- Place the robot in front of the marker. It can be moved to the side.
-- Run the `setting_pi.py` program in the `PedagoTools` folder.
+- Place the robot in front of the marker. It can be moved to the side.- Run the `setting_pi.py` program in the `PedagoTools` folder.
 - Set the coefficients, press start and repeat ad infinitum until the PID is set correctly.
+
+Translated with DeepL.com (free version)

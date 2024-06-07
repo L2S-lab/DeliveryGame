@@ -4,6 +4,28 @@
 
 Il s'agit d'un jeu de livraison entre un robot DJI ROBOMASTER EP contrôlé manuellement par une personne (clavier ou manette) et un robot DJI ROBOMASTER EP controlé automatiquement grâce à un cote Python. L'objectif est de récupérer deux balles de tennis et de les ramener dans un panier.
 
+##Installation de l'environnement Python
+
+Installation de Python : 
+- Avoir python 3.7 ou 3.8 installé sur son ordinateur. Vérification possible avec :
+``py --list``
+Si ça n'est pas le cas, installer la version voulue depuis https://www.python.org/downloads/
+
+Mise en place de l'environnement virtuel et installation du package robomaster : 
+
+- Se placer à l'endroit voulu pour créer l'environnement virtuel puis exécuter la commande :
+``py -3.7 -m venv .venv``. Cela va créer un nouvel environnement virtuel python avec la version donnée.
+
+- Une fois dans cet environnement virtuel, on peut installer le module robomaster avec la commande :
+``pip install robomaster``
+
+- Pour activer l'environnement, utiliser la commande 
+``.\/.venv/Scripts/activate``
+- Pour quitter l'environnement virtuel, utiliser la commande 
+``deactivate``
+
+En cas d'erreur, tuer le terminal permet de déconnecter l'environnement virtuel.
+
 ## Mise en place du jeu
 
 Le matériel nécessaire à la mise en place du jeu est le suivant :

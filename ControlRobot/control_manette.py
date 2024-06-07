@@ -1,4 +1,3 @@
-# App with a green ball in the center that moves when you press the HAT buttons
 import pyjoystick
 from pyjoystick.sdl2 import Key, Joystick, run_event_loop
 from robomaster import robot
@@ -59,7 +58,6 @@ def handle_key_event(key):
     if key == "Button 10":
         echap = True
 
-
 # If it button is held down it should be repeated
 repeater = pyjoystick.Repeater(first_repeat_timeout=0.1, repeat_timeout=0.2, check_timeout=0.2)
 
@@ -67,14 +65,6 @@ repeater = pyjoystick.Repeater(first_repeat_timeout=0.1, repeat_timeout=0.2, che
 mngr = pyjoystick.ThreadEventManager(event_loop=run_event_loop,
                                      handle_key_event=handle_key_event,
                                      button_repeater=repeater)
-
-
-# def find_key():
-#     key = mngr.find_key(timeout=float('inf'))
-#     if key is None:
-#         btn.setText('Find Key:')
-#     else:
-#         btn.setText('Find Key: {} = {}'.format(key, key.value))
 
 if __name__ == "__main__":
     ep_robot = robot.Robot()
@@ -87,7 +77,6 @@ if __name__ == "__main__":
     x_val = 0.1
     y_val = 0.1
     z_val = 30
-
 
     img = cv2.imread("Interface-Controle-Robot.jpg")
     cv2.namedWindow("Controles", cv2.WND_PROP_FULLSCREEN)

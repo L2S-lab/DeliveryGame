@@ -4,7 +4,7 @@
 
 Il s'agit d'un jeu de livraison entre un robot DJI ROBOMASTER EP contrôlé manuellement par une personne (clavier ou manette) et un robot DJI ROBOMASTER EP controlé automatiquement grâce à un cote Python. L'objectif est de récupérer deux balles de tennis et de les ramener dans un panier.
 
-##Installation de l'environnement Python
+## Installation de l'environnement Python
 
 Installation de Python : 
 - Avoir python 3.7 ou 3.8 installé sur son ordinateur. Vérification possible avec :

@@ -18,11 +18,12 @@ Mise en place de l'environnement virtuel et installation des packages nécessair
 
 - Pour activer l'environnement, utiliser la commande 
 ``.\/.venv/Scripts/activate``
-- Pour quitter l'environnement virtuel, utiliser la commande 
-``deactivate``
 
 - Une fois dans cet environnement virtuel, on peut installer l'ensemble des modules nécessaires avec la commande
 ``pip install -r requirements.txt``
+
+- Pour quitter l'environnement virtuel, utiliser la commande 
+``deactivate``
 
 En cas d'erreur, tuer le terminal permet de déconnecter l'environnement virtuel.
 

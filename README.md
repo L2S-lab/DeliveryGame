@@ -39,7 +39,7 @@ Chaque robot doit faire face à deux balles de tennis et derrière le robot doit
 
 Pour se connecter aux robots : 
 
-- Allumer les robots puis mettre l'interrupteur de connexion sur le mode direct
+- Allumer les robots puis mettre l'interrupteur de connexion sur le mode direct (icone avec le téléphone)
 - Se connecter au WIFI du robot sur son ordinateur
 - Le mot de passe se trouve sur l'étiquette du robot
 

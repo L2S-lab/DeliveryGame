@@ -5,33 +5,33 @@ from math import cos, sin, pi
 import numpy as np
 import imutils
 
-# Définir les plages de couleur pour la pomme vert jaune en HSV
+
+# Caractéristiques de la balle de tennis
+# Définir les plages de couleur pour la balle de tennis en HSV
 lower_yellow_green = np.array([16,72,170])
 upper_yellow_green = np.array([38,255,250])
-
-# Characteritics of the robot
-ROBOT_MAX_SPEED_X = 2.5 #m/s
-ROBOT_MAX_SPEED_Y = 0.25
-
-# Characteristics of the camera
-CAMERA_SCREEN_WIDTH = 1280 #pixels
-CAMERA_SCREEN_HEIGHT = 720 #pixels
-CAMERA_ANGLE_OF_VIEW = 120 #degrees
-CAMERA_FOCAL_LENGTH = 514 #?
-
-# Characteristics of the target
 BALL_SIZE = 6.5e-2 #m
 
-# Update frequency
-FREQUENCY = 10 #Hz
+# Caractéritiques du robot
+ROBOT_MAX_SPEED_X = 2.5 #m/s
+ROBOT_MAX_SPEED_Y = 0.25 #m/s
 
-# Paramètres du contrôleur PID
-Kp_x, Ki_x, Kd_x = 1.0 , 0.038, 0.01
-Kp_y, Ki_y, Kd_y = 5.0, 0.038, 0.01
+# Caractéristiques de la caméra
+CAMERA_SCREEN_WIDTH = 1280 #pixels
+CAMERA_SCREEN_HEIGHT = 720 #pixels
+CAMERA_ANGLE_OF_VIEW = 120 #degrés
+CAMERA_FOCAL_LENGTH = 514 #mesuré au préalable
 
-# Variables pour le calcul PID
-prev_error_x, integral_x, derivative_x = 0, 0, 0
-prev_error_y, integral_y, derivative_y = 0, 0, 0
+# Paramètres du contrôleur PI
+Kp_x, Ki_x = 1.0 , 0.038
+Kp_y, Ki_y = 5.0, 0.038
+
+# Variables pour le calcul du PI
+prev_error_x, integral_x = 0, 0
+prev_error_y, integral_y = 0, 0
+
+#Fréquence de mise à jour
+FREQUENCY = 10
 
 #count 
 count = 0
@@ -56,6 +56,7 @@ def delta_to_self(x, y, radius):
     return length * cos(angle), length * sin(angle)
 
 def remain_in_speed_bounds_x(speed):
+    """Pour s'assurer que le robot se déplace à une vitesse inférieure à ses limites techniques"""
     if abs(speed) > ROBOT_MAX_SPEED_X:
         if speed >= 0:
             return ROBOT_MAX_SPEED_X
@@ -65,6 +66,7 @@ def remain_in_speed_bounds_x(speed):
         return speed
     
 def remain_in_speed_bounds_y(speed):
+    """Pour s'assurer que le robot se déplace à une vitesse inférieure à ses limites techniques"""
     if abs(speed) > ROBOT_MAX_SPEED_Y:
         if speed >= 0:
             return ROBOT_MAX_SPEED_Y
@@ -74,51 +76,43 @@ def remain_in_speed_bounds_y(speed):
         return speed
 
 def on_detect_ball(ep_chassis, x, y, radius):
-    global prev_error_x, integral_x, derivative_x
-    global prev_error_y, integral_y, derivative_y
+    """Calcul du contrôleur PI à partir des données de la balle détectée"""
+    global prev_error_x, integral_x
+    global prev_error_y, integral_y
     global track_ball
     global count
     var_x, var_y = delta_to_self(x, y, radius)
-    # print(f"X  : {var_x} et Y : {var_y}")
-    # print(f"X_center  : {x} et Y_center : {y}")
-    error_x = var_x - 0.2
-    error_y = var_y - 0
+    error_x = var_x - 0.2 #Pour prendre en compte la taille du panier
+    error_y = var_y - 0 #Pour prendre en compte la taille du panier
 
-    
+    #Détecter si la balle est dans la pince
+    #Les valeurs on été choisies empiriquement
     x_min = int(CAMERA_SCREEN_WIDTH * 0.38)  # Exclure 38% de la largeur de l'image du côté gauche
     x_max = int(CAMERA_SCREEN_WIDTH * 0.62)  # Exclure 38% de la largeur de l'image du côté droit 
     y_min = int(CAMERA_SCREEN_HEIGHT * 0.7) # Commencer à 70% de la hauteur de l'image
     y_max = int(CAMERA_SCREEN_HEIGHT)
     if x_min <= int(x) <= x_max and y_min <= int(y) <= y_max:
-        print("Arrêt !")
         ep_chassis.drive_speed(x=0, y=0, z=0, timeout=1/FREQUENCY)
         count += 1
         if count == 10:
-            print("FINAL ! ")
             track_ball = False
     else:
         count = 0
 
-        # Calculer les termes PID pour var_x
+        # Calculer les termes PI pour var_x
         proportional_x = error_x
         integral_x = integral_x + error_x / FREQUENCY
         derivative_x = (error_x - prev_error_x) * FREQUENCY
-        # output_x = Kp_x * proportional_x + Ki_x * integral_x + Kd_x * derivative_x
         output_x = Kp_x * proportional_x + Ki_x * integral_x 
 
-        # Calculer les termes PID pour var_y
+        # Calculer les termes PI pour var_y
         proportional_y = error_y
         integral_y = integral_y + error_y / FREQUENCY
         derivative_y = (error_y - prev_error_y) * FREQUENCY
-
-        # output_y = Kp_y * proportional_y + Ki_y * integral_y + Kd_y * derivative_y
         output_y = Kp_y * proportional_y + Ki_y * integral_y
-        # print("speed x " + str(output_x) + "speed y " + str(output_y))
-
 
         x_speed = remain_in_speed_bounds_x(output_x)
         y_speed = remain_in_speed_bounds_y(output_y)
-        # print(f"Vitesse x: {x_speed} et Vitesse y : {y_speed}")
         # Appliquer la commande de contrôle
         ep_chassis.drive_speed(x=x_speed, y=y_speed, z=0, timeout=1/FREQUENCY)
         
@@ -129,8 +123,9 @@ def on_detect_ball(ep_chassis, x, y, radius):
 def detect_ball(frame):
     success = False
     x, y, radius = 0, 0, 0
+    # Flouter l'image pour éviter les bruits
     frame = cv2.GaussianBlur(frame, (11,11), 0)
-    # Convertir l'image en couleur BGR en HSV
+    # Convertir l'image en couleur RGB en HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # Filtrer l'image pour obtenir uniquement les pixels vert jaune
     mask = cv2.inRange(hsv, lower_yellow_green, upper_yellow_green)
@@ -141,7 +136,6 @@ def detect_ball(frame):
     cnts = imutils.grab_contours(cnts)
     center = None
 
-
     if len(cnts) == 0:
         success = False
     else:
@@ -150,7 +144,7 @@ def detect_ball(frame):
         M = cv2.moments(largest_contour)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
         
-        if radius < 10:
+        if radius < 10: #L'objet détecté est trop petit, il s'agit probablement d'un bruit de mesure
             success = False
         else:
             success = True
@@ -160,9 +154,7 @@ def detect_ball(frame):
     return  success, x, y, radius, frame
 
 def has_catched(ep_robot):
-    print("===>Je suis rentré dans la fonction has_catched")
     ep_camera = ep_robot.camera
-    # ep_robot.camera.start_video_stream(display=False)
     try:
         img = ep_camera.read_cv2_image(strategy="newest", timeout=3)
     except Exception as e:
@@ -176,7 +168,7 @@ def has_catched(ep_robot):
     # Coordonnées du rectangle de détection de la pince
     x_min = int(width * 0.38)  # Exclure 38% de la largeur de l'image du côté gauche
     x_max = int(width * 0.62)  # Exclure 38% de la largeur de l'image du côté droit
-    y_min = int(height * 0.7) # Commencer à 75% de la hauteur de l'image
+    y_min = int(height * 0.7)  # Commencer à 75% de la hauteur de l'image
     y_max = int(height)  
     
     if ball_on_screen and x_min <= int(x) <= x_max and y_min <= int(y) <= y_max:
@@ -199,19 +191,13 @@ def has_catched(ep_robot):
     cv2.waitKey(10)
     return False
 
-def sub_data_handler(sub_info):
-    pos_x, pos_y = sub_info
-    print("Robotic Arm: pos x:{0}, pos y:{1}".format(pos_x, pos_y))
-
 def go_to_ball(ep_robot):
     global track_ball
-    global prev_error_x, integral_x, derivative_x
-    global prev_error_y, integral_y, derivative_y
+    global prev_error_x, integral_x
+    global prev_error_y, integral_y
     track_ball = True
-    prev_error_x, integral_x, derivative_x = 0, 0, 0
-    prev_error_y, integral_y, derivative_y = 0, 0, 0
-    # ep_robot.camera.start_video_stream(display=False)
-
+    prev_error_x, integral_x = 0, 0
+    prev_error_y, integral_y = 0, 0
 
     ep_chassis = ep_robot.chassis
     ep_camera = ep_robot.camera
@@ -236,35 +222,26 @@ def go_to_ball(ep_robot):
         thickness = 2  # Épaisseur du trait
         cv2.rectangle(img, (x1, y1), (x2, y2), color, thickness)
         
-        
         if track_ball:
             ball_on_screen, x, y, radius, _ = detect_ball(img)
 
             if ball_on_screen:
                 on_detect_ball(ep_chassis, x, y, radius)
-                # Draw circle around the ball on-screen
+                # Afficher un cercle autour de la balle
                 cv2.circle(img, (int(x), int(y)), int(radius), (0,255,255), 2)
                 cv2.circle(img, (int(x), int(y)), 5, (255,0,0), thickness)
-        
         else:
             break
     
         cv2.imshow("Detect a Tennis Ball", img)    
         cv2.waitKey(10)
 
-        # Toggle ball tracking
+        # Pour arrêter de traquer la balle
         if keyboard.is_pressed('space'):
             track_ball = not track_ball
 
-        # Escape the game
+        # Arrêter le jeu
         if keyboard.is_pressed('esc'):
             break
-        
     
-    # result = ep_vision.unsub_detect_info(name="marker")
     cv2.destroyAllWindows()
-    # ep_camera.stop_video_stream()
-    # ep_gripper.unsub_status()
-    # ep_robot.close()
-
-

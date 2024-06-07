@@ -82,8 +82,8 @@ def on_detect_ball(ep_chassis, x, y, radius):
     global track_ball
     global count
     var_x, var_y = delta_to_self(x, y, radius)
-    error_x = var_x - 0.2 #Pour prendre en compte la taille du panier
-    error_y = var_y - 0 #Pour prendre en compte la taille du panier
+    error_x = var_x - 0.2    #Pour compenser des erreurs d'approximation
+    error_y = var_y - 0      #Valeurs empiriques
 
     #Détecter si la balle est dans la pince
     #Les valeurs on été choisies empiriquement

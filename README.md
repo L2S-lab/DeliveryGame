@@ -37,6 +37,12 @@ Le matériel nécessaire à la mise en place du jeu est le suivant :
 
 Chaque robot doit faire face à deux balles de tennis et derrière le robot doit se situer la boite en carton avec le marqueur. 
 
+Pour se connecter aux robots : 
+
+- Allumer les robots puis mettre l'interrupteur de connexion sur le mode direct
+- Se connecter au WIFI du robot sur son ordinateur
+- Le mot de passe se trouve sur l'étiquette du robot
+
 Pour faire fonctionner le robot controlé automatiquement :
 
 - Lancer le programme `main.py` qui se situe dans le dossier `TheGame`.

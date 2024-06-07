@@ -13,7 +13,7 @@ Le matériel nécessaire à la mise en place du jeu est le suivant :
 - 2 paniers : des cartons feront l'affaire
 - des marqueurs DJI
 
-Chaque robot doit faire à deux balles de tennis et derrière le robot doit se situer la boite en carton avec le marqueur. 
+Chaque robot doit faire face à deux balles de tennis et derrière le robot doit se situer la boite en carton avec le marqueur. 
 
 Pour faire fonctionner le robot controlé automatiquement :
 
@@ -51,7 +51,7 @@ The equipment needed to set up the game is as follows:
 - 2 baskets: cardboard boxes will do
 - DJI markers
 
-Each robot must play with two tennis balls and behind the robot must be the cardboard box with the marker. 
+Each robot must be in front of two tennis balls and behind the robot must be the cardboard box with the marker. 
 
 To make the automatically controlled robot work :
 

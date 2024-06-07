@@ -75,7 +75,7 @@ Pour cela, il faut :
 ---------------------------------------------------------------------------------------------------------------------------------------
 English Version
 # DeliveryGame
-[English version below]
+
 ## Goal of the game
 
 This is a delivery game between a DJI ROBOMASTER EP robot controlled manually by a person (keyboard or joystick) and a DJI ROBOMASTER EP robot controlled automatically using a Python code. The aim is to retrieve two tennis balls and return them to a basket.
@@ -112,6 +112,8 @@ The hardware required to set up the game is as follows:
 - 2 baskets: cardboard boxes will do
 - DJI markers
 - two computers
+- une manette 8-bitdo sn30 pro
+
 Each robot must face two tennis balls and behind the robot must be the cardboard box with the marker. 
 
 Diagram of how to set up the game :   
@@ -141,5 +143,3 @@ To do this, they must :
 
 - Place the robot in front of the marker. It can be moved to the side.- Run the `setting_pi.py` program in the `PedagoTools` folder.
 - Set the coefficients, press start and repeat ad infinitum until the PID is set correctly.
-
-Translated with DeepL.com (free version)

@@ -7,22 +7,22 @@ Il s'agit d'un jeu de livraison entre un robot DJI ROBOMASTER EP contrôlé manu
 ## Installation de l'environnement Python
 
 Installation de Python : 
-- Avoir python 3.7 ou 3.8 installé sur son ordinateur. Vérification possible avec :
+- Avoir python 3.7 ou 3.8 installé sur son ordinateur. Vérification possible avec
 ``py --list``
 Si ça n'est pas le cas, installer la version voulue depuis https://www.python.org/downloads/
 
-Mise en place de l'environnement virtuel et installation du package robomaster : 
+Mise en place de l'environnement virtuel et installation des packages nécessaires : 
 
-- Se placer à l'endroit voulu pour créer l'environnement virtuel puis exécuter la commande :
+- Se placer à l'endroit voulu pour créer l'environnement virtuel puis exécuter la commande
 ``py -3.7 -m venv .venv``. Cela va créer un nouvel environnement virtuel python avec la version donnée.
-
-- Une fois dans cet environnement virtuel, on peut installer l'ensemble des modules nécessaires avec la commande :
-``pip install -r requirements.txt``
 
 - Pour activer l'environnement, utiliser la commande 
 ``.\/.venv/Scripts/activate``
 - Pour quitter l'environnement virtuel, utiliser la commande 
 ``deactivate``
+
+- Une fois dans cet environnement virtuel, on peut installer l'ensemble des modules nécessaires avec la commande
+``pip install -r requirements.txt``
 
 En cas d'erreur, tuer le terminal permet de déconnecter l'environnement virtuel.
 
@@ -45,7 +45,7 @@ Pour se connecter aux robots :
 
 Pour faire fonctionner le robot contrôlé automatiquement :
 
-- Lancer le programme `main.py` qui se situe dans le dossier `TheGame`.
+- Utiliser la commande `python .\TheGame\main.py ` pour démarrer le jeu.
 Il est possible de configurer la langue dans laquelle le son est émis.
 
 Pour faire fonctionner le robot contrôlé manuellement :

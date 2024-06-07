@@ -3,32 +3,31 @@ import time
 import cv2
 from math import cos, sin, pi
 
-# Characteristics of the camera
+# Caractéristiques de la caméra
 X_PHOTO = 1280 #pixels
 Y_PHOTO = 720 #pixels
-ANGLE_OF_VIEW = 120 #degrees
-FOCAL_LENGTH = 514 #m
+ANGLE_OF_VIEW = 120 #degrés
+FOCAL_LENGTH = 514 #Mesuré au préalable
 
-# Characteristics of the target
+# Caractéristiques du marqueur
 TARGET_SIZE = 17e-2 #m
 
 markers = []
 ep_chassis = None
 ep_vision = None
 
-
 ROBOT_MAX_SPEED_X = 0.5 #m/s
-ROBOT_MAX_SPEED_Y = 0.5
+ROBOT_MAX_SPEED_Y = 0.5 #m/s
 
 FREQUENCY = 10
 
 # Paramètres du contrôleur PID
-Kp_x, Ki_x, Kd_x = 1.0 , 0, 0.01
-Kp_y, Ki_y, Kd_y = 0.5, 0.01, 0.01
+Kp_x, Ki_x = 1.0 , 0
+Kp_y, Ki_y = 0.5, 0.01
 
 # Variables pour le calcul PID
-prev_error_x, integral_x, derivative_x = 0, 0, 0
-prev_error_y, integral_y, derivative_y = 0, 0, 0
+prev_error_x, integral_x = 0, 0
+prev_error_y, integral_y = 0, 0
 
 track_marker = True
 
@@ -108,18 +107,11 @@ def go_to_marker(ep_robot):
     ep_camera = ep_robot.camera
     ep_chassis = ep_robot.chassis
 
-    # try:
-    #     ep_camera.start_video_stream(display=False)
-    # except Exception as e:
-    #     print("pb in read_cv2_image ", e)
-    #     ep_camera.start_video_stream(display=False)
-
     while len(markers)==0:
         ep_vision.sub_detect_info(name="marker", callback=on_detect_marker)
         print("Je n'ai pas détecté de marqueur, j'avance")
         ep_robot.chassis.move(x=0.1, y=0, xy_speed=0.5).wait_for_completed()
-    
-    print(markers)
+
     print("sortie du while, début du mvt")
     
     while True :
@@ -133,32 +125,25 @@ def go_to_marker(ep_robot):
         delta_x, delta_y = markers[-1].delta_to_self()
         print(f"X  : {delta_x} et Y : {delta_y}")
         print(f"X_center  : {x} et Y_center : {y}")
-        error_x = delta_x - 0.45
+        error_x = delta_x - 0.45 #Pour prendre en compte la taille du panier
         error_y = delta_y
-        # delta_y -= 0.05
-
+    
         count = 0
 
-        # Calculer les termes PID pour var_x
+        # Calculer les termes PI pour var_x
         proportional_x = error_x
         integral_x = integral_x + error_x / FREQUENCY
         derivative_x = (error_x - prev_error_x) * FREQUENCY
-        # output_x = Kp_x * proportional_x + Ki_x * integral_x + Kd_x * derivative_x
         output_x = Kp_x * proportional_x + Ki_x * integral_x 
 
-        # Calculer les termes PID pour var_y
+        # Calculer les termes PI pour var_y
         proportional_y = error_y
         integral_y = integral_y + error_y / FREQUENCY
         derivative_y = (error_y - prev_error_y) * FREQUENCY
-
-        # output_y = Kp_y * proportional_y + Ki_y * integral_y + Kd_y * derivative_y
         output_y = Kp_y * proportional_y + Ki_y * integral_y
-        print("speed x " + str(output_x) + "speed y " + str(output_y))
-
 
         x_speed = remain_in_speed_bounds_x(output_x)
         y_speed = remain_in_speed_bounds_y(output_y)
-        # print(f"Vitesse x: {x_speed} et Vitesse y : {y_speed}")
         # Appliquer la commande de contrôle
         ep_chassis.drive_speed(x=x_speed, y=y_speed, z=0, timeout=1/FREQUENCY)
         
@@ -166,17 +151,16 @@ def go_to_marker(ep_robot):
         prev_error_x = error_x
         prev_error_y = error_y
 
-        if abs(error_x)<0.1 and abs(error_y)<0.07 :
+        if abs(error_x) < 0.1 and abs(error_y) < 0.07 : #Si le robot est arrivé à destination
             break
-        
-    print("marker:{0} x:{1}, y:{2}, w:{3}, h:{4}".format(info, x, y, w, h))
+
     print("fini mvt")
     time.sleep(0.1)
     result = ep_vision.unsub_detect_info(name="marker")
     print("fini unsub")
     time.sleep(0.1)
     cv2.destroyAllWindows()
-    # ep_camera.stop_video_stream()
     time.sleep(0.1)
     print("fin video stream")
     return None
+    

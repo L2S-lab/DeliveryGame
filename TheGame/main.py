@@ -7,10 +7,13 @@ from robomaster import led
 
 
 if __name__ == "__main__":
+    #FOR A CONNECTION WITH WIFI, USE CONN_TYPE = "ap" and sn=None
     conn_type = "ap"
     sn = None
+    ######################################################################
     #audio parameters : "francais", "english" ou None
     audio = "francais"
+    ######################################################################
     ep_robot = connect(conn_type, sn)
     ep_robot.camera.start_video_stream(display=False)
     if audio=="francais":ep_robot.play_audio(filename="Livraison/audio/francais/start.wav").wait_for_completed()

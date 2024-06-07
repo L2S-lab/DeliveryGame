@@ -16,8 +16,8 @@ Mise en place de l'environnement virtuel et installation du package robomaster :
 - Se placer à l'endroit voulu pour créer l'environnement virtuel puis exécuter la commande :
 ``py -3.7 -m venv .venv``. Cela va créer un nouvel environnement virtuel python avec la version donnée.
 
-- Une fois dans cet environnement virtuel, on peut installer le module robomaster avec la commande :
-``pip install robomaster``
+- Une fois dans cet environnement virtuel, on peut installer l'ensemble des modules nécessaires avec la commande :
+``pip install -r requirements.txt``
 
 - Pour activer l'environnement, utiliser la commande 
 ``.\/.venv/Scripts/activate``
@@ -43,12 +43,12 @@ Pour se connecter aux robots :
 - Se connecter au WIFI du robot sur son ordinateur
 - Le mot de passe se trouve sur l'étiquette du robot
 
-Pour faire fonctionner le robot controlé automatiquement :
+Pour faire fonctionner le robot contrôlé automatiquement :
 
 - Lancer le programme `main.py` qui se situe dans le dossier `TheGame`.
 Il est possible de configurer la langue dans laquelle le son est émis.
 
-Pour faire fonctionner le robot controlé manuellement :
+Pour faire fonctionner le robot contrôlé manuellement :
 
 - Brancher une manette de jeu à votre ordinateur.
 - Lancer le programme `control_manette.py` dans le dossier `ControlRobot`.

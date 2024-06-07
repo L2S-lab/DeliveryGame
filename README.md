@@ -39,7 +39,8 @@ Le matériel nécessaire à la mise en place du jeu est le suivant :
 
 Chaque robot doit faire face à deux balles de tennis et derrière le robot doit se situer la boite en carton avec le marqueur. 
 
-Schéma de mise en place du jeu : 
+Schéma de mise en place du jeu :   
+
 ![Schéma jeu](https://github.com/comoxx/DeliveryGame/assets/93337725/c95afe61-1f57-4ff4-9317-bffa23e5b58d)
 
 

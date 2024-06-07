@@ -153,44 +153,6 @@ def detect_ball(frame):
 
     return  success, x, y, radius, frame
 
-def has_catched(ep_robot):
-    ep_camera = ep_robot.camera
-    try:
-        img = ep_camera.read_cv2_image(strategy="newest", timeout=3)
-    except Exception as e:
-        print("erreur dans le chargement d'image ", e)
-        return False
-
-    ball_on_screen, x, y, _, _ = detect_ball(img)
-
-    height, width, _ = img.shape
-
-    # Coordonnées du rectangle de détection de la pince
-    x_min = int(width * 0.38)  # Exclure 38% de la largeur de l'image du côté gauche
-    x_max = int(width * 0.62)  # Exclure 38% de la largeur de l'image du côté droit
-    y_min = int(height * 0.7)  # Commencer à 75% de la hauteur de l'image
-    y_max = int(height)  
-    
-    if ball_on_screen and x_min <= int(x) <= x_max and y_min <= int(y) <= y_max:
-        print("Good")
-        return True
-    x1 = int(width * 0.38)  # Exclure 10% de la largeur de l'image du côté gauche
-    x2 = int(width * 0.62)  # Exclure 10% de la largeur de l'image du côté droit
-    y1 = int(height)  # Commencer à 80% de la hauteur de l'image
-    y2 = int(height * 0.75)
-    cv2.destroyAllWindows()
-    cv2.waitKey(10)
-    # ep_robot.camera.stop_video_stream()
-    if ball_on_screen:
-        if x1 <= int(x) <= x2 and y2 <= int(y) <= y1:
-            print("Good")
-            cv2.destroyAllWindows()
-            cv2.waitKey(10)
-            return True
-    cv2.destroyAllWindows()
-    cv2.waitKey(10)
-    return False
-
 def go_to_ball(ep_robot):
     global track_ball
     global prev_error_x, integral_x

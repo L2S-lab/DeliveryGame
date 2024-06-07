@@ -34,8 +34,12 @@ Le matériel nécessaire à la mise en place du jeu est le suivant :
 - 4 balles de tennis
 - 2 paniers : des cartons feront l'affaire
 - des marqueurs DJI
+- deux ordinateurs
+- une manette 8-bitdo sn30 pro
 
 Chaque robot doit faire face à deux balles de tennis et derrière le robot doit se situer la boite en carton avec le marqueur. 
+![Schéma jeu](https://github.com/comoxx/DeliveryGame/assets/93337725/c95afe61-1f57-4ff4-9317-bffa23e5b58d)
+
 
 Pour se connecter aux robots : 
 

@@ -7,8 +7,8 @@ def turn(ep_robot, direction=1):
     ep_robot.chassis.drive_speed(z=direction*10, timeout=0.5)
 
 def turn_till_detect_ball(ep_robot):
+    """Fait tourner le robot sur lui-même jusqu'à détecter une balle et renvoie l'angle de rotation total du robot"""
     ep_camera = ep_robot.camera
-    # ep_camera.start_video_stream(display=False)
     start_time = time.time()
     time_pos = 0
     time_neg = 0
@@ -18,11 +18,11 @@ def turn_till_detect_ball(ep_robot):
             cv2.waitKey(10)
         except Exception as e:
             print("erreur connexion camera", e)
-            pass
+            continue
         
         ball_on_screen, x, y, radius, _ = detect_ball(img)
         if ball_on_screen:
-            # Draw circle around the ball on-screen
+            # Afficher un cercle à l'écran autour de la balle
             cv2.circle(img, (int(x), int(y)), int(radius), (0,255,255), 2)
             cv2.imshow("Searching for a ball", img)
             
@@ -44,6 +44,5 @@ def turn_till_detect_ball(ep_robot):
 
     cv2.destroyAllWindows()
     time.sleep(0.5)
-    # ep_camera.stop_video_stream()
     time.sleep(0.1)
     return 10 * (time_pos - time_neg)

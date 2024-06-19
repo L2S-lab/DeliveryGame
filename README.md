@@ -142,5 +142,6 @@ The students can set the PID that allows the robot to move towards the marker.
 
 To do this, they must :
 
-- Place the robot in front of the marker. It can be moved to the side.- Run the `setting_pi.py` program in the `PedagoTools` folder.
+- Place the robot in front of the marker. It can be moved to the side.
+- Run the `setting_pi.py` program in the `PedagoTools` folder.
 - Set the coefficients, press start and repeat ad infinitum until the PID is set correctly.

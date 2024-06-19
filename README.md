@@ -131,7 +131,8 @@ To operate the automatically controlled robot :
 
 - Use the command `python .\TheGame\main.py ` to start the game.You can configure the language in which the sound is emitted.
 
-To run the manually controlled robot:- Connect a game controller to your computer.
+To run the manually controlled robot:
+- Connect a game controller to your computer.
 - Run the `control_manette.py` program in the `ControlRobot` folder.
 
 

@@ -321,12 +321,12 @@ def setup():
     GMessage_97["text"] = "Rappel : Si on augmente la valeur de Kp, on gagne en rapidité mais on perd en précision. Si on augmente la valeur de Ki, on perd en précision et en stabilité. "
     GMessage_97.place(x=40,y=350,height=160)
 
-    image = tk.PhotoImage(file="/Users/alexishanne/Desktop/Projet S8/jeu-robots/Pedago/CS.png")
+    image = tk.PhotoImage(file="PedagoTools/CS.png")
     image_resized = image.subsample(6, 6)  # Les arguments sont les facteurs de réduction pour la largeur et la hauteur
     image_label = tk.Label(root, image=image_resized)
     image_label.place(x=0, y=0)
 
-    image2 = tk.PhotoImage(file="/Users/alexishanne/Desktop/Projet S8/jeu-robots/Pedago/L2S.png")
+    image2 = tk.PhotoImage(file="PedagoTools/L2S.png")
     image_resized2 = image2.subsample(9, 9)  # Les arguments sont les facteurs de réduction pour la largeur et la hauteur
     image_label2 = tk.Label(root, image=image_resized2)
     image_label2.place(x=400, y=0)

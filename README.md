@@ -59,7 +59,7 @@ Il est possible de configurer la langue dans laquelle le son est émis.
 Pour faire fonctionner le robot contrôlé manuellement :
 
 - Brancher une manette de jeu à votre ordinateur.
-- Lancer le programme `control_manette.py` dans le dossier `ControlRobot`.
+- Lancer le programme `control_manette.py` dans le dossier `ControlRobot` avec la commande : ``python .\ControlRobot\control_manette.py``
 
 
 ## Aspect pédagogique du jeu
@@ -69,7 +69,7 @@ Les étudiants ont la possibilité de régler le PID qui permet au robot d'aller
 Pour cela, il faut :
 
 - Mettre le robot en face du marqueur. Il peut être décalé sur le côté.
-- Lancer le programme `setting_pi.py` dans le dossier `PedagoTools`.
+- Lancer le programme `setting_pi.py` dans le dossier `PedagoTools` avec la commande `python .\PedagoTools\setting_pi.py`
 - Régler les coefficients, appuyer sur start et recommencer à l'infini jusqu'à que le PID soit bien réglé.
 
 ---------------------------------------------------------------------------------------------------------------------------------------

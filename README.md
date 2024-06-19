@@ -84,7 +84,7 @@ This is a delivery game between a DJI ROBOMASTER EP robot controlled manually by
 
 Installing Python : 
 - Have Python 3.7 or 3.8 installed on your computer. You can check with
-py --list
+``py --list``
 If this is not the case, install the required version from https://www.python.org/downloads/
 
 Setting up the virtual environment and installing the necessary packages: 
@@ -93,13 +93,13 @@ Setting up the virtual environment and installing the necessary packages:
 ``py -3.7 -m venv .venv``. This will create a new python virtual environment with the given version.
 
 - To activate the environment, use the command 
-.\/.venv/Scripts/activate
+``.\/.venv/Scripts/activate``
 
 - Once in this virtual environment, you can install all the necessary modules with the command
-pip install -r requirements.txt
+``pip install -r requirements.txt``
 
 - To exit the virtual environment, use the command 
-deactivate
+``deactivate``
 
 In the event of an error, kill the terminal to disconnect the virtual environment.
 

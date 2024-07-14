@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import keyboard
 import time
 import cv2
 from math import cos, sin, pi

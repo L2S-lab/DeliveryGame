@@ -61,7 +61,7 @@ def remain_in_speed_bounds_x(speed):
         if speed >= 0:
             return ROBOT_MAX_SPEED_X
         else:
-            return - ROBOT_MAX_SPEED_X
+            return -ROBOT_MAX_SPEED_X
     else:
         return speed
     
@@ -71,7 +71,7 @@ def remain_in_speed_bounds_y(speed):
         if speed >= 0:
             return ROBOT_MAX_SPEED_Y
         else:
-            return - ROBOT_MAX_SPEED_Y
+            return -ROBOT_MAX_SPEED_Y
     else:
         return speed
 
@@ -102,13 +102,13 @@ def on_detect_ball(ep_chassis, x, y, radius):
         # Calculer les termes PI pour var_x
         proportional_x = error_x
         integral_x = integral_x + error_x / FREQUENCY
-        derivative_x = (error_x - prev_error_x) * FREQUENCY
+        #derivative_x = (error_x - prev_error_x) * FREQUENCY
         output_x = Kp_x * proportional_x + Ki_x * integral_x 
 
         # Calculer les termes PI pour var_y
         proportional_y = error_y
         integral_y = integral_y + error_y / FREQUENCY
-        derivative_y = (error_y - prev_error_y) * FREQUENCY
+        #derivative_y = (error_y - prev_error_y) * FREQUENCY
         output_y = Kp_y * proportional_y + Ki_y * integral_y
 
         x_speed = remain_in_speed_bounds_x(output_x)
@@ -170,7 +170,7 @@ def go_to_ball(ep_robot):
         except Exception as e:
             print("erreur connexion camera ", e)
             continue
-        cv2.waitKey(10)
+        #cv2.waitKey(10)
         height, width, _ = img.shape
 
         # Coordonnées du coin supérieur gauche et du coin inférieur droit du rectangle
@@ -196,7 +196,8 @@ def go_to_ball(ep_robot):
             break
     
         cv2.imshow("Detect a Tennis Ball", img)    
-        cv2.waitKey(10)
+        if cv2.waitKey(1)==27:
+            break
 
         # Pour arrêter de traquer la balle
         if keyboard.is_pressed('space'):

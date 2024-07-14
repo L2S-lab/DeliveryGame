@@ -40,9 +40,8 @@ def turn_till_detect_ball(ep_robot):
             turn(ep_robot)
             time_pos += time.time() - start_time
             start_time = time.time()
-    end_time = time.time()
+#    end_time = time.time()
 
     cv2.destroyAllWindows()
     time.sleep(0.5)
-    time.sleep(0.1)
     return 10 * (time_pos - time_neg)

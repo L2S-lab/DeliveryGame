@@ -65,7 +65,7 @@ Each robot must face two tennis balls and behind the robot must be the cardboard
 
 Diagram of how to set up the game :   
 
-![Schéma jeu](https://github.com/L2S-lab/DeliveryGame/assets/schema.png)
+![Schéma jeu](https://github.com/L2S-lab/DeliveryGame/blob/main/assets/schema.png)
 
 
 To connect to the robots : 

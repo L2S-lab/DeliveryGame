@@ -1,5 +1,3 @@
-import time
-import keyboard
 import cv2
 from math import cos, sin, pi
 import numpy as np
@@ -9,7 +7,9 @@ import imutils
 # Caractéristiques de la balle de tennis
 # Définir les plages de couleur pour la balle de tennis en HSV
 lower_yellow_green = np.array([16,72,170])
+#lower_yellow_green = np.array([29,86,6])
 upper_yellow_green = np.array([38,255,250])
+#upper_yellow_green = np.array([64,255,255  ])
 BALL_SIZE = 6.5e-2 #m
 
 # Caractéritiques du robot
@@ -22,23 +22,7 @@ CAMERA_SCREEN_HEIGHT = 720 #pixels
 CAMERA_ANGLE_OF_VIEW = 120 #degrés
 CAMERA_FOCAL_LENGTH = 514 #mesuré au préalable
 
-# Paramètres du contrôleur PI
-Kp_x, Ki_x = 1.0 , 0.038
-Kp_y, Ki_y = 5.0, 0.038
-
-# Variables pour le calcul du PI
-prev_error_x, integral_x = 0, 0
-prev_error_y, integral_y = 0, 0
-
-#Fréquence de mise à jour
-FREQUENCY = 10
-
-#count 
-count = 0
-
 x_center, y_center, width, height = 10, 10, 10, 10
-
-track_ball = True
 
 def compute_actual_length_to_target(radius):
     """`radius` largeur de l'objet (en pixels)"""
@@ -75,51 +59,6 @@ def remain_in_speed_bounds_y(speed):
     else:
         return speed
 
-def on_detect_ball(ep_chassis, x, y, radius):
-    """Calcul du contrôleur PI à partir des données de la balle détectée"""
-    global prev_error_x, integral_x
-    global prev_error_y, integral_y
-    global track_ball
-    global count
-    var_x, var_y = delta_to_self(x, y, radius)
-    error_x = var_x - 0.2    #Pour compenser des erreurs d'approximation
-    error_y = var_y - 0      #Valeurs empiriques
-
-    #Détecter si la balle est dans la pince
-    #Les valeurs on été choisies empiriquement
-    x_min = int(CAMERA_SCREEN_WIDTH * 0.38)  # Exclure 38% de la largeur de l'image du côté gauche
-    x_max = int(CAMERA_SCREEN_WIDTH * 0.62)  # Exclure 38% de la largeur de l'image du côté droit 
-    y_min = int(CAMERA_SCREEN_HEIGHT * 0.7) # Commencer à 70% de la hauteur de l'image
-    y_max = int(CAMERA_SCREEN_HEIGHT)
-    if x_min <= int(x) <= x_max and y_min <= int(y) <= y_max:
-        ep_chassis.drive_speed(x=0, y=0, z=0, timeout=1/FREQUENCY)
-        count += 1
-        if count == 10:
-            track_ball = False
-    else:
-        count = 0
-
-        # Calculer les termes PI pour var_x
-        proportional_x = error_x
-        integral_x = integral_x + error_x / FREQUENCY
-        #derivative_x = (error_x - prev_error_x) * FREQUENCY
-        output_x = Kp_x * proportional_x + Ki_x * integral_x 
-
-        # Calculer les termes PI pour var_y
-        proportional_y = error_y
-        integral_y = integral_y + error_y / FREQUENCY
-        #derivative_y = (error_y - prev_error_y) * FREQUENCY
-        output_y = Kp_y * proportional_y + Ki_y * integral_y
-
-        x_speed = remain_in_speed_bounds_x(output_x)
-        y_speed = remain_in_speed_bounds_y(output_y)
-        # Appliquer la commande de contrôle
-        ep_chassis.drive_speed(x=x_speed, y=y_speed, z=0, timeout=1/FREQUENCY)
-        
-        # Mise à jour de l'erreur précédente
-        prev_error_x = error_x
-        prev_error_y = error_y
-
 def detect_ball(frame):
     success = False
     x, y, radius = 0, 0, 0
@@ -148,63 +87,7 @@ def detect_ball(frame):
             success = False
         else:
             success = True
-            cv2.circle(frame, (int(x), int(y)), int(radius), (0,255,255), 2)
-            cv2.circle(frame, center, 5, (0,0,255), 2)
+            #cv2.circle(frame, (int(x), int(y)), int(radius), (0,255,255), 2)
+            #cv2.circle(frame, center, 5, (0,0,255), 2)
 
-    return  success, x, y, radius, frame
-
-def go_to_ball(ep_robot):
-    global track_ball
-    global prev_error_x, integral_x
-    global prev_error_y, integral_y
-    track_ball = True
-    prev_error_x, integral_x = 0, 0
-    prev_error_y, integral_y = 0, 0
-
-    ep_chassis = ep_robot.chassis
-    ep_camera = ep_robot.camera
-
-    while True: 
-        try:
-            img = ep_camera.read_cv2_image(strategy="newest", timeout=3)
-        except Exception as e:
-            print("erreur connexion camera ", e)
-            continue
-        #cv2.waitKey(10)
-        height, width, _ = img.shape
-
-        # Coordonnées du coin supérieur gauche et du coin inférieur droit du rectangle
-        x1 = int(width * 0.38)  # Exclure 10% de la largeur de l'image du côté gauche
-        x2 = int(width * 0.62)  # Exclure 10% de la largeur de l'image du côté droit
-        y1 = int(height)  # Commencer à 80% de la hauteur de l'image
-        y2 = int(height * 0.75)  # Monter jusqu'à 60% de la hauteur de l'image
-
-        # Dessiner le rectangle sur l'image
-        color = (0, 255, 0)  # Couleur du rectangle en BGR (ici, vert)
-        thickness = 2  # Épaisseur du trait
-        cv2.rectangle(img, (x1, y1), (x2, y2), color, thickness)
-        
-        if track_ball:
-            ball_on_screen, x, y, radius, _ = detect_ball(img)
-
-            if ball_on_screen:
-                on_detect_ball(ep_chassis, x, y, radius)
-                # Afficher un cercle autour de la balle
-                cv2.circle(img, (int(x), int(y)), int(radius), (0,255,255), 2)
-                cv2.circle(img, (int(x), int(y)), 5, (255,0,0), thickness)
-        else:
-            break
-    
-        cv2.imshow("Detect a Tennis Ball", img)    
-        if cv2.waitKey(1)==27:
-            break
-
-        # Pour arrêter de traquer la balle
-        if keyboard.is_pressed('space'):
-            track_ball = not track_ball
-
-        # Arrêter le jeu
-        if keyboard.is_pressed('esc'):
-            break
-    
-    cv2.destroyAllWindows()
+    return  success, x, y, radius

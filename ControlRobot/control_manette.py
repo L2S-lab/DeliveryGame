@@ -2,7 +2,6 @@ import pyjoystick
 from pyjoystick.sdl2 import Key, Joystick, run_event_loop
 from robomaster import robot
 from numpy import sqrt, sign
-import keyboard
 import time
 import cv2
 
@@ -34,12 +33,12 @@ def handle_key_event(key):
 
     if key == "Button 1":
         ep_gripper.close(power=50)
-        time.sleep(0.1)
+        time.sleep(0.5)
         ep_gripper.pause()
 
     if key == "Button 0":
         ep_gripper.open(power=50)
-        time.sleep(0.1)
+        time.sleep(0.5)
         ep_gripper.pause()
 
     if key == "Button 2":
@@ -73,20 +72,25 @@ if __name__ == "__main__":
     ep_chassis = ep_robot.chassis
     ep_arm = ep_robot.robotic_arm
     ep_gripper = ep_robot.gripper
+    ep_camera = ep_robot.camera
+    ep_camera.start_video_stream(display=True)
 
     x_val = 0.1
     y_val = 0.1
-    z_val = 30
+    z_val = 50
 
-    img = cv2.imread("Interface-Controle-Robot.jpg")
+    img = cv2.imread("assets/Interface-Controle-Robot.jpg")
     cv2.namedWindow("Controles", cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty("Controles",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
+    #cv2.setWindowProperty("Controles",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
     mngr.start()
     while True:
         cv2.imshow("Controles", img)
-        cv2.waitKey(1)
-        if echap or keyboard.is_pressed('esc'):
+        k = cv2.waitKey(1)
+        if k == 27:
+            ep_camera.stop_video_stream()
             break
+        #if echap or keyboard.is_pressed('esc'):
+        #    break
     cv2.destroyAllWindows()
     ep_gripper.unsub_status()
     ep_robot.close()

@@ -44,7 +44,7 @@ If you try on Mac, please report any error or feedback.
 
 ## Known issues
 
-In some laptop we have noticed connections issues with the robot. If the code crashes without any error, rerun the task. 
+In some laptop we have noticed connections issues with the robot. If the code crashes without any error, re-run the task. 
 
 ## Goal of the game
 
@@ -65,7 +65,7 @@ Each robot must face two tennis balls and behind the robot must be the cardboard
 
 Diagram of how to set up the game :   
 
-![Schéma jeu](https://github.com/L2S-lab/DeliveryGame/blob/main/assets/schema.png)
+![Game Schema](https://github.com/L2S-lab/DeliveryGame/blob/main/assets/schema.png)
 
 
 To connect to the robots : 
@@ -75,6 +75,8 @@ To connect to the robots :
 - The password can be found on the robot label
 
 To operate the automatically controlled robot :
+
+- Open Terminal/PowerShell in the directory of the game.
 
 - Use the command `.\.venv\Scripts\activate ` to activate virtual environment.
 
